@@ -13,7 +13,7 @@ d3.json("CountryDecade.json").then(function(data) {
 });
 
 
-const width = 1000, height = 650;
+const width = 1200, height = 650;
 
 const svg = d3.select('#map').append("svg")
     .attr("id", "svg")
@@ -33,7 +33,7 @@ const svg = d3.select('#map').append("svg")
 const path = d3.geoPath();
 
 var projection = d3.geoMercator()
-    .center([0,40])                // GPS of location to zoom on
+    .center([-40,45])                // GPS of location to zoom on
     .scale(150)                       // This is like the zoom
     .translate([ width/2, height/2 ]);
     
@@ -79,7 +79,11 @@ const deps = svg.append("g");
     // Add a scale for bubble size
     var sizeAll = function(d){
         if(d>6000){
-            d=10000;
+            if(d>10000){
+                d=10000+d*0.25;
+            }else{
+                d=6000+d*0.5;
+            }
         }
         return 2+(40*(d)/10000);
     }
@@ -88,9 +92,19 @@ const deps = svg.append("g");
 
 // Add legend: circles
 var valuesToShow = [1000, 5000, 20000]
-var xCircle = 75
-var xLabel = 225
-var yCircle = 625
+var xCircle = 75;
+var xLabel = 225;
+var yCircle = 540;
+
+svg.append("text")
+    .attr("x", 20 )
+    .attr("y", 400) // 100 is where the first dot appears. 25 is the distance between dots
+    .style("opacity", 1)
+    .text("Nombre d'artistes")
+    .attr("text-anchor", "left")
+    .style("alignment-baseline", "middle")
+    .style("font-weight", "bold");
+
 svg
     .selectAll("legend")
     .data(valuesToShow)
@@ -138,14 +152,24 @@ svg
         .domain(keys)
         .range(d3.schemeSet1);
 
+
+    svg.append("text")
+        .attr("x", 20 )
+        .attr("y", 130) // 100 is where the first dot appears. 25 is the distance between dots
+        .style("opacity", 1)
+        .text("Genres musicaux populaires")
+        .attr("text-anchor", "left")
+        .style("alignment-baseline", "middle")
+        .style("font-weight", "bold");
+
     // Add one dot in the legend for each name.
     var size = 20
     svg.selectAll("mydots")
         .data(keys)
         .enter()
         .append("rect")
-        .attr("x", 50)
-        .attr("y", function(d,i){ return 350 + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
+        .attr("x", 20)
+        .attr("y", function(d,i){ return 145 + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
         .attr("width", size)
         .attr("height", size)
         .style("opacity", 1)
@@ -156,8 +180,8 @@ svg
         .data(keys)
         .enter()
         .append("text")
-        .attr("x", 50 + size*1.2)
-        .attr("y", function(d,i){ return 350 + i*(size+5) + (size/2)}) // 100 is where the first dot appears. 25 is the distance between dots
+        .attr("x", 20 + size*1.2)
+        .attr("y", function(d,i){ return 145 + i*(size+5) + (size/2)}) // 100 is where the first dot appears. 25 is the distance between dots
         .style("fill", function(d){ return color(d)})
         .style("opacity", 1)
         .text(function(d){ return d})
@@ -211,7 +235,7 @@ d3.json('geoGenre.json').then(function(geojson) {
 
     // Circles creation
     var circles = svg
-        .selectAll("myCircles").data(geojson.features)
+        .selectAll("myCircles")
         .data(countriesValues)
         .enter().append('circle')
         .attr("class" , function(d){ val = "Decade"+d.decade; return val })
@@ -228,8 +252,7 @@ d3.json('geoGenre.json').then(function(geojson) {
         .on("mousemove", mousemove)
         .on("mouseleave", mouseleave)
         .on("click", function(d) {
-            var nameC = d.properties.name;
-            console.log("test");
+            nameC = d.country;
             d3.select("#countryChoiced").text(nameC);
             d3.select("#changeVisu").attr("hidden", null);
         });
@@ -272,7 +295,7 @@ d3.json('geoGenre.json').then(function(geojson) {
                   
                     displayingDecade.attr("hidden", null);
                   
-                    displayingDecade.html("Décénie : "+decadeChoosen);
+                    displayingDecade.html("Décennie : "+decadeChoosen);
                 
                    svg.selectAll(".Decade"+decade).transition().duration(1000).style("opacity", 0).attr("r", 0);
                    
@@ -291,40 +314,32 @@ d3.json('geoGenre.json').then(function(geojson) {
           
           // When a button change, I run the update function
             d3.selectAll(".checkbox").on("change",update);
-            
-            
-            
-          // When a button change, I run the update function
-            d3.selectAll("#currentDecadeValue").on("change",changeVal);
-            
-            function changeVal(){
-                
-                var decadeChoosen = document.getElementById("currentDecadeValue").value;
-                
-                var displayingDecade = d3.select("#displayingDecade");
-
-                // We hide all datas we don't need
-                for(var i = 1880; i<2021; i+=10){
-                    if(i!=decadeChoosen)
-                        svg.selectAll(".Decade"+i).style("opacity", 0).attr("r", 0);
-                }
-                
-                svg.selectAll(".Decade"+decadeChoosen).transition().duration(300).style("opacity", 1).attr("r", function(d){ return sizeAll(d.sum) });
-
-                // We hide the displaying of the decade
-
-                displayingDecade.attr("hidden", null);
-                
-                displayingDecade.html("Décénie : "+decadeChoosen);
-                
-            }
-
 
             // And I initialize it at the beginning
             update();
 
 });
 
+function changeVal(){
 
+    var decadeChoosen = document.getElementById("currentDecadeValue").value;
+
+    var displayingDecade = d3.select("#displayingDecade");
+
+    // We hide all datas we don't need
+    for(var i = 1880; i<2021; i+=10){
+        if(i!=decadeChoosen)
+            svg.selectAll(".Decade"+i).style("opacity", 0).attr("r", 0);
+    }
+
+    svg.selectAll(".Decade"+decadeChoosen).style("opacity", 1).attr("r", function(d){ return sizeAll(d.sum) });
+
+    // We hide the displaying of the decade
+
+    displayingDecade.attr("hidden", null);
+
+    displayingDecade.html("Décennie : "+decadeChoosen);
+
+}
 
 

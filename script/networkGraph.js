@@ -103,8 +103,8 @@ function networkFunction(country) {
         d3.select("#loader").attr("hidden", "true");
 
 
-        var width = 1000;
-        var height = 800;
+        var width = 800;
+        var height = 620;
 
         var r = 3;
         var color = d3.scaleOrdinal(d3.schemeSet2)

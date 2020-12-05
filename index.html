@@ -1,94 +1,73 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+</head>
+<body>
 
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
-        <style>
-            .circle:hover{
-              stroke: black;
-              stroke-width: 4px;
-            }
-            div.tooltip{
-                position:absolute;
-            }
-        </style>
-        
-    </head>
-    <body>
-        <script src="https://d3js.org/d3.v5.min.js"></script>
-        <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
-        <script src="https://d3js.org/d3-force.v2.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-
-        <div class="container">
-
-        <h1>Nombre d'artistes par pays</h1>
-
-        <div class="row">
-
-            <div class="form-check">
-                <label class="form-check-label">Changer de vision</label><br>
-                <input type="checkbox" class="checkbox" value="ALL">
-                <label class="form-check-label">Par décénie</label>
-            </div>
-
-            <div class="form-check">
-                <label class="form-check-label" id="displayingDecade">Décenie : 2000</label>
-                <input class="form-control-range" type="range" max="2020" min="1880" step="10" id="currentDecadeValue" value="2000">
-            </div>
-
-
-            <div class="form-check" hidden="true" id="changeVisu">
-                <label class="form-check-label" >Cliquez sur un pays</label>
-                <button type="button" class="btn btn-secondary" id="countryChoiced" onclick="callNetforkFunction()"  data-toggle="modal" data-target="#scrollableBackdrop"></button>
-            </div>
-
+    <div class="collapse navbar-collapse justify-content-md-center" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-link active" href="index.html">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="visuLN.html">Visualisation 1 & 2</a>
+            <a class="nav-link" href="#">Visualisation 2</a>
+            <a class="nav-link " href="#">Visualisation 3</a>
         </div>
+    </div>
+</nav>
 
-        <div class="row">
-                <div id="map">
 
-                </div>
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-3">Projet Visualisation M2 MIAGE</h1>
+        <p>Dans le cadre du module de Visualisation, notre groupe de projet composé de Ashley LY, Jimmy PHOMMARATH, Nicolas POUGET, Amélie VIERON et Laure WRIGHT a réalisé différentes représentations graphiques de données statistiques.</p>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Example row of columns -->
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Visualisation 1</h2>
+            <h5>Genre dominant et nombre d'artistes par pays</h5>
+            <p class="text-justify">Cette visualisation est une dot map du nombre d'artistes totaux par pays avec la possibilité de filtrer ce nombre par décennie. C'est aussi une choropleth map montrant le genre de musique le plus représenté pour chaque pays.</p>
+            <p><a class="btn btn-secondary" href="visuLN.html" role="button">Visualisation 1 & 2 &raquo;</a></p>
         </div>
-
-        <div class="row"></div>
-
+        <div class="col-md-4">
+            <h2>Visualisation 2</h2>
+            <h5>Répartition des artistes associés à leur genre par labels et pour un pays</h5>
+            <p class="text-justify">Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <p><a class="btn btn-secondary" href="#" role="button">Visualisation 1 & 2 &raquo;</a></p>
         </div>
-
-        <div class="modal fade" id="scrollableBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable  modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearNetwork()">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" id="networkContains">
-                        <div class="spinner-border" role="status" id="loader">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="col-md-4">
+            <h2>Visualisation 3</h2>
+            <p class="text-justify">Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
         </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-4">
+            <h2>Visualisation 4</h2>
+            <p class="text-justify">Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Visualisation 5</h2>
+            <p class="text-justify">Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
 
+</div>
 
-        <script src="script/visualisation.js"></script>
-
-        <script src="script/networkGraph.js"></script>
-
-    </body>
-
-
+</body>
 </html>
