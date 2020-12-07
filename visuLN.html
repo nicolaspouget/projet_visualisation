@@ -21,6 +21,10 @@ and open the template in the editor.
             div.tooltip{
                 position:absolute;
             }
+
+            .labelNode{
+                font-size: 8px;
+            }
         </style>
         
     </head>
@@ -77,7 +81,20 @@ and open the template in the editor.
             <div class="modal-dialog modal-dialog-scrollable  modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel"></h5>
+                        <div class="container">
+                            <h5 class="modal-title row" id="staticBackdropLabel"></h5>
+                            <div class="row">
+                                <font color="#fc8d62">&#9632;</font>
+                                <span class="pr-4"> Artiste </span>
+
+                                <font color="#e78ac3" >&#9632;</font>
+                                <span class="pr-4"> Genre </span>
+
+                                <font color="#8da0cb">&#9632;</font>
+                                <span class="pr-4"> Label </span>
+                            </div>
+                        </div>
+
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearNetwork()">
                             <span aria-hidden="true">&times;</span>
                         </button>

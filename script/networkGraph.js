@@ -130,6 +130,17 @@ function networkFunction(country) {
             .attr("class", "everything");
 
         var link = g.append("g")
+            .attr("class", "links")
+            .selectAll("line")
+            .data(linksTable)
+            .enter().append("line")
+            .attr("stroke-width", function (d) {
+                return d.nbArtist + 5;
+            })
+            .attr("stroke", "#999")
+            .attr("stroke-opacity", 0.6);
+/*
+        var link = g.append("g")
             .attr("stroke", "#999")
             .attr("stroke-opacity", 0.6)
             .selectAll("line")
@@ -137,9 +148,9 @@ function networkFunction(country) {
             .join("line")
             .attr("stroke-width", function (d) {
                 return d.nbArtist + 5;
-            });
+            });*/
 
-        var node = g.append("g")
+        /*var node = g.append("g")
             .attr("stroke", "#fff")
             .attr("stroke-width", 1.5)
             .selectAll("circle")
@@ -159,7 +170,38 @@ function networkFunction(country) {
                 return color(d.category);
             })
             .on('mouseover.fade', fade(0.1))
-            .on('mouseout.fade', fade(1));
+            .on('mouseout.fade', fade(1));*/
+
+        var node = g.selectAll('.nodes')
+            .data(nodesTable)
+            .enter().append('g')
+            .attr('class', 'nodes');
+
+        node.append('circle')
+            .attr("stroke", "#fff")
+            .attr("stroke-width", 1.5)
+            .attr("r", function (d) {
+                var rayon = 0;
+                if (d.category !== 3 && d.nbArtist > 2) {
+                    rayon = d.nbArtist / 2;
+                } else {
+
+                    rayon = d.nbArtist;
+                }
+                return rayon + 3;
+            })
+            .attr("fill", function (d) {
+                return color(d.category);
+            })
+            .on('mouseover.fade', fade(0.1, false))
+            .on('mouseout.fade', fade(1, true));
+
+        node.append("text")
+            .attr('class', 'labelNode')
+            .attr("dx", 12)
+            .attr("dy", ".35em")
+            .attr("hidden", true)
+            .text(function (d) { return d.name });
 
         node.append("title")
             .text(function (d) {
@@ -176,14 +218,14 @@ function networkFunction(country) {
                 return result;
             });
 
+        var labels = node.selectAll("text");
+
         simulation.on("tick", () => {
+            node.attr('transform', d => `translate(${d.x},${d.y})`);
             link.attr("x1", d => d.source.x)
                 .attr("y1", d => d.source.y)
                 .attr("x2", d => d.target.x)
                 .attr("y2", d => d.target.y);
-
-            node.attr("cx", d => d.x)
-                .attr("cy", d => d.y);
         });
 
         var drag_handler = d3.drag()
@@ -231,12 +273,19 @@ function networkFunction(country) {
             return linkedByIndex[`${a.index},${b.index}`] || linkedByIndex[`${b.index},${a.index}`] || a.index === b.index;
         }
 
-        function fade(opacity) {
+        function fade(opacity, showLabel) {
             return function (d) {
                 node.style('stroke-opacity', function (o) {
                     const thisOpacity = isConnected(d, o) ? 1 : opacity;
                     this.setAttribute('fill-opacity', thisOpacity);
                     return thisOpacity;
+                });
+
+                node.nodes().forEach(function (o) {
+                    o = d3.select(o);
+                    if(isConnected(d, o.data()[0])) {
+                        o.select('text').attr('hidden', showLabel || null);
+                    }
                 });
 
                 link.style('stroke-opacity', o => (o.source === d || o.target === d ? 1 : opacity));
