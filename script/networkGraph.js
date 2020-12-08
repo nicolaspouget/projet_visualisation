@@ -34,19 +34,18 @@ function networkFunction(country) {
 
         function updatePays(pays) {
             graph.forEach((item, index) => {
-                var labels = item.labels.replace("[", "").replace("]", "").replace("\"", "").replace("\"", "").replace("\",\"", ",").split(",");
-                var genres = item.genres.replace("[", "").replace("]", "").replace("\"", "").replace("\"", "").replace("\",\"", ",").split(",");
+                var labels = JSON.parse(item.labels);
+                var genres = JSON.parse(item.genres);
 
 
                 if (item.location.country == pays) {
                     labels.forEach((label, index) => {
                         label = label.replace("\"", "").replace("\"", "");
                         if (label !== "") {
-                            if (!nodesTable.find(n => n.name == label && n.country == item.location.country)) {
+                            if (!nodesTable.find(n => n.name == label)) {
                                 let noeudlabel = new Object();
                                 noeudlabel.name = label;
                                 noeudlabel.nbArtist = 1;
-                                noeudlabel.country = item.location.country;
                                 noeudlabel.category = 1;
                                 nodesTable.push(noeudlabel);
                             } else {
@@ -66,15 +65,14 @@ function networkFunction(country) {
                     genres.forEach((genre, index) => {
                         genre = genre.replace("\"", "").replace("\"", "");
                         if (genre !== "") {
-                            if (!nodesTable.find(n => n.name == genre && n.country == item.location.country)) {
+                            if (!nodesTable.find(n => n.name == genre)) {
                                 let noeudlabel = new Object();
                                 noeudlabel.name = genre;
                                 noeudlabel.nbArtist = 1;
-                                noeudlabel.country = item.location.country;
                                 noeudlabel.category = 2;
                                 nodesTable.push(noeudlabel);
                             } else {
-                                let noeud = nodesTable.find(n => n.name == genre && n.country == item.location.country);
+                                let noeud = nodesTable.find(n => n.name == genre);
                                 noeud.nbArtist = noeud.nbArtist + 1;
                             }
 
@@ -90,7 +88,6 @@ function networkFunction(country) {
                         let noeudlabel = new Object();
                         noeudlabel.name = item.name;
                         noeudlabel.nbArtist = 1;
-                        noeudlabel.country = item.location.country;
                         noeudlabel.category = 3;
                         nodesTable.push(noeudlabel);
                     }
