@@ -25,6 +25,8 @@ and open the template in the editor.
             .labelNode{
                 font-size: 8px;
             }
+
+
         </style>
         
     </head>
@@ -53,20 +55,14 @@ and open the template in the editor.
         <div class="row">
 
             <div class="form-check">
-                <label class="form-check-label">Changer de vision</label><br>
-                <input type="checkbox" class="checkbox" value="ALL">
-                <label class="form-check-label">Par décennie</label>
-            </div>
-
-            <div class="form-check">
-                <label class="form-check-label" id="displayingDecade">Décennie : 2000</label>
-                <input oninput="changeVal()"  class="form-control-range" type="range" max="2020" min="1880" step="10" id="currentDecadeValue" value="2000">
+                <label class="form-check-label" id="displayingDecade">Décennie : 2020</label>
+                <input oninput="changeVal()"  class="form-control-range" type="range" max="2020" min="1880" step="10" id="currentDecadeValue" value="2020">
             </div>
 
 
-            <div class="form-check" hidden="true" id="changeVisu">
+            <div class="form-check" id="changeVisu">
                 <label class="form-check-label" >Cliquez sur un pays</label>
-                <button type="button" class="btn btn-secondary" id="countryChoiced" onclick="callNetforkFunction()"  data-toggle="modal" data-target="#scrollableBackdrop"></button>
+                <button type="button" disabled="true" class="btn btn-secondary" id="countryChoiced" onclick="callNetforkFunction()" data-toggle="modal" data-target="#scrollableBackdrop">Pays</button>
             </div>
 
         </div>

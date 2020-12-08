@@ -6,7 +6,7 @@
 
 var countriesValues = [];
 
-d3.json("CountryDecade.json").then(function(data) {
+d3.json("CountryDecadeV2.json").then(function(data) {
     data.forEach(function(p){
         countriesValues.push(p);
     });
@@ -65,7 +65,7 @@ const deps = svg.append("g");
       Tooltip
         .html(d.country+"<br>" + "Count :  "  + d.sum)
         .style("left", (d3.mouse(this)[0]+200) + "px")
-        .style("top", (d3.mouse(this)[1]+90) + "px");
+        .style("top", (d3.mouse(this)[1]+120) + "px");
 
     }
     var mouseleave = function(d) {
@@ -222,7 +222,7 @@ d3.json('geoGenre.json').then(function(geojson) {
         .on("click", function(d) {
             nameC = d.properties.name;
             d3.select("#countryChoiced").text(nameC);
-            d3.select("#changeVisu").attr("hidden", null);
+            d3.select("#countryChoiced").attr("disabled", null);
         })
         .on("mouseover", function(d) {
             d3.select(this).style("opacity", 1);
@@ -243,8 +243,8 @@ d3.json('geoGenre.json').then(function(geojson) {
         })		 
         .attr("cy", function(d) { return projection([d.longitude, d.latitude])[1];
         })
-        .style("fill", "D700C4")
         .style("opacity", 0).attr("r", 0)
+        .style("fill", "#D700C4")
         .attr("stroke", "#8d1e83")
         .attr("stroke-width", 1)
         .attr("fill-opacity", .6)
@@ -254,69 +254,11 @@ d3.json('geoGenre.json').then(function(geojson) {
         .on("click", function(d) {
             nameC = d.country;
             d3.select("#countryChoiced").text(nameC);
-            d3.select("#changeVisu").attr("hidden", null);
+            d3.select("#countryChoiced").attr("disabled", null);
         });
 
-
-        // Manage the displaying of the circles
-        function update(){
-            
-            // For each check box:
-            d3.selectAll(".checkbox").each(function(d){
-              var cb = d3.select(this);
-              var decade = cb.property("value");
-
-              var decadeChoosen = document.getElementById("currentDecadeValue").value;
-
-              var displayingDecade = d3.select("#displayingDecade");
-
-              // If the box is check, I show the group
-              if(!cb.property("checked")){
-                  
-                    displayingDecade.attr("hidden", "true");
-                  
-                    svg.selectAll(".Decade"+decade).transition().duration(1000).style("opacity", 1).attr("r", function(d){ return sizeAll(d.count) });
-
-                    // We hide all datas we don't need
-
-                    for(var i = 1880; i<2021; i+=10){
-                        
-                        svg.selectAll(".Decade"+i).style("opacity", 0).attr("r", 0);
-                    }
-
-                    // We display the displaying of te decades
-
-                    d3.select("#currentDecadeValue").attr("hidden","true");
-                    
-                    d3.select("#currentDecadeValue").attr("disabled","true");
-                    
-              // Otherwise I hide it
-              }else{
-                  
-                    displayingDecade.attr("hidden", null);
-                  
-                    displayingDecade.html("Décennie : "+decadeChoosen);
-                
-                   svg.selectAll(".Decade"+decade).transition().duration(1000).style("opacity", 0).attr("r", 0);
-                   
-                   
-                   svg.selectAll(".Decade"+decadeChoosen).transition().duration(1000).style("opacity", 1).attr("r", function(d){ return sizeAll(d.sum) });
-
-                  // We hide the displaying of the decade
-
-                  d3.select("#currentDecadeValue").attr("hidden",null);
-                   
-                    d3.select("#currentDecadeValue").attr("disabled",null);
-                   
-              }
-            });
-          }
-          
-          // When a button change, I run the update function
-            d3.selectAll(".checkbox").on("change",update);
-
-            // And I initialize it at the beginning
-            update();
+        // Initialize
+        changeVal();
 
 });
 
