@@ -6,7 +6,7 @@
 
 var countriesValues = [];
 
-d3.json("CountryDecadeV2.json").then(function(data) {
+d3.json("../data/CountryDecadeV2.json").then(function(data) {
     data.forEach(function(p){
         countriesValues.push(p);
     });
@@ -192,7 +192,7 @@ svg
 var nameC = "";
 
 
-d3.json('geoGenre.json').then(function(geojson) {
+d3.json('../data/geoGenre.json').then(function(geojson) {
 
     
     // Map creation
