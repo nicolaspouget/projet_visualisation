@@ -30,7 +30,7 @@ function networkFunction(country) {
 
 
 
-    d3.json("wasabi-artist.json").then(function (graph) {
+    d3.json("../data/wasabi-artist.json").then(function (graph) {
 
         function updatePays(pays) {
             graph.forEach((item, index) => {
